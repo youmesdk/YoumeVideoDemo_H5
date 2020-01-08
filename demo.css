@@ -1,0 +1,202 @@
+body {
+    margin: 0;
+    padding: 20px;
+    font: 16px/20px "Microsoft YaHei";
+}
+
+h1 {
+    margin: 20px 0;
+    padding: 0 0 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 30px;
+    line-height: 30px;
+}
+
+#status-indicator {
+    background-color: #eee;
+    min-height: 30px;
+    overflow: hidden;
+    line-height: 30px;
+    padding: 5px 20px;
+    margin-bottom: 20px;
+}
+
+.one-indicator {
+    float: left;
+    padding-right: 20px;
+    margin-right: 20px;
+    border-right: 1px solid #ccc;
+}
+
+.local-media-indicator {
+    border-right: 0 none;
+}
+
+.local-media-controls {
+    display: inline-block;
+}
+
+@media (max-width: 767px) {
+    .one-indicator {
+        float: none;
+        padding-right: 0;
+        margin-right: 0;
+        border-right: 0 none;
+    }
+
+    .local-media-outer video {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .local-media-show {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .local-media-outer video {
+        height: 131px;
+        padding: 20px;
+        background-color: #fff;
+        display: none;
+        margin-left: -20px;
+    }
+    
+    #local-screen-media {
+        width: 80%;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .signaling-indicator {
+        border-right: 0 none;
+    }
+
+    .local-media-indicator {
+        float: none;
+        clear: left;
+        border-right: 0 none;
+    }
+
+    .local-media-outer video {
+        padding-top: 50px;
+    }
+}
+
+#login-form {
+    border: 1px solid #eee;
+    padding: 20px;
+    margin: 0 auto 20px;
+    max-width: 470px;
+}
+
+.login-form-p {
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+.login-form-p label {
+    display: inline-block;
+    width: 80px;
+    vertical-align: middle;
+}
+
+.login-form-preset-users {
+    margin: 0 0 20px 80px;
+    overflow: hidden;
+}
+
+.one-preset-user {
+    float: left;
+    margin-right: 20px;
+}
+
+.login-form-submit {
+    margin: 0 0 0 80px;
+}
+
+.room-container {
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+#room-id-input {
+    width: 100px;
+}
+
+.room-title {
+    background-color: #eee;
+    min-height: 30px;
+    line-height: 30px;
+    padding: 4px 19px 5px;
+}
+
+.room-members {
+    min-height: 100px;
+    padding: 20px 10px 0;
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    align-content: flex-start;
+}
+
+
+
+.user-container {
+    margin: 0 10px 20px;
+    border: 1px solid #eee;
+    flex: 0 0 auto;
+}
+
+.user-video-outer video {
+    width: 320px;
+    display: inline-block;
+}
+
+.user-id {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.user-one-line {
+    background-color: #eee;
+    padding: 5px 20px;
+}
+
+.user-one-line span {
+    display: inline-block;
+    width: 80px;
+}
+
+.console-title {
+    background-color: #eee;
+    height: 30px;
+    line-height: 30px;
+    padding: 5px 20px;
+}
+
+.console {
+    border: 1px solid #eee;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    line-height: 30px;
+    height: 400px;
+    overflow: scroll;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+
+#console span  { color: #000; }
+#console span.info  { color: #004AA0; }
+#console span.debug  { color: #004AA0; }
+#console span.error { color: #ff0000; }
+#console span.warn  { color: #ff8500; }
