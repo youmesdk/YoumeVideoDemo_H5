@@ -49,7 +49,7 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
     // 初始化
     let ymrtc = new YMRTC({
         appKey: YM_APPKEY,
-        video: true,  // true - 视频+音频，false - 仅语音
+        video: false,  // true - 视频+音频，false - 仅语音
         debug: true, //开启测试日志
         dev: false //是用测试环境
     });
@@ -73,11 +73,12 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
             alert('请输入用户ID。');
             return;
         }
-        //ymrtc.getAllDevices().then(list=>{})
+
         // 登录
         ymrtc.login(userId, token).catch(() => {
             alert('登录失败。');
         });
+
         // 加入房间，会自动等待登录成功再加入房间
         if (roomId) {
             ymrtc.joinRoom(roomId).catch(e =>{
@@ -85,14 +86,6 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
                 alert("进入频道失败");
             });
         }
-        /* 获取设备列表
-        ymrtc.getAllDevices().then(list=>{
-            console.log(JSON.stringify(list))
-            
-            //{"audioInput":[{"id":"default","label":"默认 - 内置麦克风 (Built-in)"},{"id":"5a871f1ef47dab2c84b1ab0fd648e0cb965020db01998a7e3c69b3b386ec3c58","label":"内置麦克风 (Built-in)"}],"audioOutput":[{"id":"default","label":"默认 - 内置扬声器 (Built-in)"},{"id":"8a419d752dd8a9912a3f417a352f57b731a4c97e3d3c52b64c780b0aae3bdd81","label":"内置扬声器 (Built-in)"}],"videoInput":[{"id":"65dc40811966be0048ede0e94927658f211f61857392df414b2adb843dd7bef8","label":"FaceTime 高清摄像头（内建） (05ac:8511)"}]}
-        })
-        */
-        
     };
 
     // 登出
@@ -102,16 +95,6 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
         E('local-media').style.display = 'none';
     };
 
-    // 屏蔽摄像头和麦克风（黑屏、静音）
-    E('local-media-pause-video').onclick = function (e) {
-        if (ymrtc.isLocalVideoPaused()) {
-            ymrtc.resumeLocalVideo();
-            e.target.innerHTML = '屏蔽摄像头';
-        } else {
-            ymrtc.pauseLocalVideo();
-            e.target.innerHTML = '开启摄像头';
-        }
-    };
     E('local-media-pause-audio').onclick = function (e) {
         if (ymrtc.isLocalAudioPaused()) {
             ymrtc.resumeLocalAudio();
@@ -122,24 +105,12 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
         }
     };
 
-    /* 选择视频设备
-    video:{
-        'height': {'ideal': 480},
-        'width':  {'ideal': 640},
-        deviceId: {exact: videoDeviceId }
-    },
-    audio: {
-        deviceId: {exact: audioDeviceId}
-    },
-
-    */
-
     // 启动/停止本地媒体
     E('local-media-start-stop').onclick = function (e) {
         var s = ymrtc.getLocalMediaStatus();
         if (s === 'stop' || s === 'failed') {
             ymrtc.startLocalMedia({
-                video: 'stdres' 
+                video: false //不需要视频
             }).catch((err) => {
                 if (err.name === 'NotAllowedError') {
                     alert('浏览器禁用了摄像头和麦克风的访问权限，或者页面没有使用 https 协议，请检查设置。');
@@ -149,32 +120,10 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
                     alert(err.name);
                 }
             });
-            e.target.innerHTML = '停止摄像头';
+            e.target.innerHTML = '停止语音';
         } else {
             ymrtc.stopLocalMedia();
-            e.target.innerHTML = '启动摄像头';
-        }
-    };
-
-    // 启动/停止录屏, 针对 Electron 引擎
-    E('local-screen-start-stop').onclick = function (e) {
-        var s = ymrtc.getLocalMediaStatus();
-        if (s === 'stop' || s === 'failed') {
-            ymrtc.startLocalMedia({
-                video: 'screen'
-            }).catch((err) => {
-                if (err.name === 'NotAllowedError') {
-                    alert('浏览器禁用了摄像头和麦克风的访问权限，或者页面没有使用 https 协议，请检查设置。');
-                } else if (err.name === 'NotFoundError') {
-                    alert('没有找到摄像头或麦克风，请检查它们的连接。');
-                } else {
-                    alert(err.name);
-                }
-            });
-            e.target.innerHTML = '停止录屏';
-        } else {
-            ymrtc.stopLocalMedia();
-            e.target.innerHTML = '启动录屏';
+            e.target.innerHTML = '启动语音';
         }
     };
 
@@ -243,22 +192,23 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
     ymrtc.on('local-media.status:*', function (eventFullName, status) {
         E('local-media-status').innerHTML = status;
     });
+
+    // 自己的流已经可用 (开启语音以后)
     ymrtc.on('local-media.has-stream', function (stream) {
-        // 设置声音输出音量
-        //ymrtc.setLocalAudioVolumeGain(0.1);
         E('local-media').style.display = 'inline-block';
         E('local-media').srcObject = stream;
-        E('local-media-start-stop').innerHTML = '停止';
-        //test code
-        //ymrtc.setOutputDevice(E('local-media'),'d0d8e8ee7fa555165b84c1497e123badb3bfe32e53566efe4800ea07533df809');
+        E('local-media-start-stop').innerHTML = '停止语音';
     });
+
+    // 自己的流已经被停止（关闭语音以后）
     ymrtc.on('local-media.remove-stream', function () {
         E('local-media').style.display = 'none';
-        E('local-media-start-stop').innerHTML = '启动';
+        E('local-media-start-stop').innerHTML = '启动语音';
     });
 
     // 事件监听：加入、退出房间
     ymrtc.on('room.join:*', function (eventFullName, roomId) {
+        console.log('==========>room.join:*', eventFullName, roomId)
         // 自己加入了房间
         E('room-id').innerHTML = roomId;
         E('room-id').style.display = 'inline';
@@ -266,8 +216,10 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
         E('room-id-input').style.display = 'none';
         E('join-leave-room').innerHTML = '退出房间';
     });
+
+    // 自己退出了房间
     ymrtc.on('room.leave:*', function (eventFullName, roomId) {
-        // 自己退出了房间
+        console.log('==========>room.leave:*', eventFullName, roomId)
         E('room').innerHTML = '';
         E('room-id').style.display = 'none';
         E('room-id-input').style.display = 'inline-block';
@@ -276,8 +228,8 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
 
     // 事件监听：用户进入、退出房间
     ymrtc.on('room.member-join:*', function (eventFullName, roomId, memberId) {
-        console.log(eventFullName);
-        // 有人加入了房间
+        console.log('==========>room.member-join:*', eventFullName, roomId, memberId)
+        // 有人加入了房间（有新的用户上麦）
         let memberDom = E('user-container-' + memberId);
         if (!memberDom) {
             memberDom = document.createElement('div');
@@ -286,14 +238,14 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
             memberDom.innerHTML = userTemplate.replace(/{{userId}}/g, memberId);
             E('room').appendChild(memberDom);
 
-            if(ymrtc.getBrowserDetails().browser === "safari"){
-                //safari 需要hack才能自动播放
+            if (ymrtc.getBrowserDetails().browser === "safari") {
+                // safari 需要hack才能自动播放
                 ymrtc.getAllDevices().then(list=>{
                     ymrtc.requestUserStream(memberId).then(function(stream) {
                         ymrtc.attachMediaStream(E('user-video-' + memberId), stream)
                     });
                 })
-            }else{
+            } else {
                 ymrtc.requestUserStream(memberId).then(function(stream) {
                     ymrtc.attachMediaStream(E('user-video-' + memberId), stream)
                 });
@@ -303,27 +255,31 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
                 ymrtc.attachMediaStream(E('user-video-' + memberId), stream)
             });
 
-            // 双击视频全屏
-            E('user-video-' + memberId).ondblclick = function (e) {
-                if (e.target.requestFullscreen) e.target.requestFullscreen();
-                else if (e.target.webkitRequestFullScreen) e.target.webkitRequestFullScreen();
-                else if (e.target.mozRequestFullScreen) e.target.mozRequestFullScreen();
-            };
-
             E('user-mute-on-' + memberId).onclick = ()=> {
-                E('user-video-' + memberId).muted = true ;//静音，相当于关闭声音播放
+                E('user-video-' + memberId).muted = true ; // 静音，相当于关闭声音播放
                 ymrtc.setMute(memberId, true);
             };
             E('user-mute-off-' + memberId).onclick = ()=> {
-                E('user-video-' + memberId).muted = false ;//取消静音，相当于打开声音播放
+                E('user-video-' + memberId).muted = false ; // 取消静音，相当于打开声音播放
                 ymrtc.setMute(memberId, false);
             };
             
-            E('user-mute-on-' + memberId).checked = true;
+            // hack:如果是safari浏览器，在IOS上禁止自动播放, 默认是静音的，需要用户手动触发
+            if (ymrtc.getBrowserDetails().browser === "safari") {
+                const autoplay = function () {
+                    const audio = E('user-video-' + memberId)
+                    audio.load();
+                    audio.onplay();
+                    window.removeEventListener('touchstart', autoplay)
+                }
+                window.addEventListener('touchstart', autoplay)
+            }
+            E('user-mute-off-' + memberId).checked = true;
         }
     });
+
+    // 有人退出了房间（有用户下麦了）
     ymrtc.on('room.member-leave:*', function (eventFullName, roomId, memberId) {
-        // 有人退出了房间
         let memberDom = E('user-container-' + memberId);
         if (memberDom) {
             E('room').removeChild(memberDom);
@@ -343,25 +299,20 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
             userDom.innerHTML = status;
         }
     });
+
+    // 信令握手状态
     ymrtc.on('user.signaling-status:*', function (eventFullName, userId, status) {
-        // 信令握手状态
         let userDom = E('user-signaling-status-' + userId);
         if (userDom) {
             userDom.innerHTML = status;
         }
     });
 
+    // 信令握手状态
     ymrtc.on('user.media-stats-update:*', function (eventFullName, userId, stats) {
-        // 信令握手状态
         let userDom = E('user-media-stats-' + userId);
         if (userDom) {
             userDom.innerHTML = JSON.stringify(stats, null, 2);
         }
     });
-
-
-    /*ymrtc.on('*', function (eventFullName) {
-        console.log(eventFullName, arguments);
-    });*/
-
 })();

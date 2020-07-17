@@ -2,9 +2,9 @@
 <html lang="zh-cn">
 <head>
     <meta charset="UTF-8">
-    <title>WebRTC Demo</title>
+    <title>WebRTC Voice Demo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="demo.css">
+    <link rel="stylesheet" href="../demo.css">
 </head>
 <body>
 <h1>YouMe WebRTC Demo</h1>
@@ -21,19 +21,17 @@
         <strong id="signaling-status">disconnected</strong>
     </div>
     <div class="one-indicator local-media-indicator">
-        <span>本地视频状态：</span>
+        <span>本地语音状态：</span>
         <strong id="local-media-status">stop</strong>
         <span class="local-media-controls">
-            <button id="local-media-pause-video">屏蔽摄像头</button>
             <button id="local-media-pause-audio">关闭麦克风</button>
-            <button id="local-media-start-stop">启动摄像头</button>
-            <button id="local-screen-start-stop">启动录屏</button>
+            <button id="local-media-start-stop">启动语音</button>
         </span>
     </div>
 </div>
 <div class="local-media-show">
     <div class="local-media-outer">
-        <video id="local-media" muted autoplay playsinline></video>
+        <audio id="local-media" muted autoplay playsinline></audio>
     </div>
 </div>
 <div id="login-form">
@@ -69,7 +67,7 @@
     </div>
     <p class="login-form-p">
         <label for="login-room-id">房间号：</label>
-        <input type="text" id="login-room-id" value="12345">
+        <input type="text" id="login-room-id" value="4782317">
     </p>
     <div class="login-form-submit">
         &nbsp;<button id="login">登录</button>
@@ -91,25 +89,17 @@
     </div>
 </div>
 
-<!--
-<div class="console-title">Console</div>
-<div class="console">
-    <pre id="console"></pre>
-</div>
--->
-
-<!--<div class="user-container" id="user-container-{{userId}}">-->
 <script type="text/template" id="user-template">
     <div class="user-video-outer">
-        <video id="user-video-{{userId}}" muted autoplay playsinline></video>
+        <audio id="user-video-{{userId}}" autoplay playsinline></audio>
     </div>
     <div class="user-id">{{userId}}</div>
     <div class="user-video-control user-one-line">
-        <span>静音：</span>
+        <span>声音：</span>
         <input type="radio" id="user-mute-on-{{userId}}" name="user-mute-{{userId}}" class="user-mute user-mute-on">
-        <label for="user-mute-on-{{userId}}">开</label>
+        <label for="user-mute-on-{{userId}}">关</label>
         <input type="radio" id="user-mute-off-{{userId}}" name="user-mute-{{userId}}" class="user-mute user-mute-off">
-        <label for="user-mute-off-{{userId}}">关</label>
+        <label for="user-mute-off-{{userId}}">开</label>
     </div>
     <div class="user-signaling-status user-one-line">
         <span>信令状态：</span>
@@ -123,14 +113,15 @@
         <pre id="user-media-stats-{{userId}}"></pre>
     </div>
 </script>
-<!--</div>-->
-<!-- <script src="vconsole.min.js"></script> -->
+
+<!-- 不注释下一个script，展示出Vconsole -->
+<!-- <script src="../vconsole.min.js"></script> -->
 
 <script>
     if(typeof VConsole !== 'undefined') window.vc = new VConsole();
 </script>
-<script src="sdk/ymrtc.min.js"></script>
-<script src="crypto-js.js"></script>
+<script src="../sdk/ymrtc.min.js"></script>
+<script src="../crypto-js.js"></script>
 <script src="demo.js"></script>
 
 </body>

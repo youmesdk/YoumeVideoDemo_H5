@@ -1,3 +1,7 @@
+2020-04-26 version 1.0.5
+1. 兼容新版safari 和 chrome，暂不支持和原生SDK互通，需要再更新原生SDK进行互通
+2. iOS 13.4.1 safari 自动播放的hack修正
+
 2019-01-29 version 1.0.3
 1. 优化：在requestUserStream后才接收数据
 2. 默认fps 调整
