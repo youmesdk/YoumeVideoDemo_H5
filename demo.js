@@ -50,8 +50,8 @@ var APIKEY = "f2d520691f378d9e37ccfc76f46fbdb0";// 实际使用时，API KEY只�
     let ymrtc = new YMRTC({
         appKey: YM_APPKEY,
         video: true,  // true - 视频+音频，false - 仅语音
-        debug: true, //开启测试日志
-        dev: false //是用测试环境
+        debug: true, // 开启测试日志
+        dev: false // 是否使用测试环境 - 测试环境可以不填写appKey，若填写则使用填写的值
     });
 
 
