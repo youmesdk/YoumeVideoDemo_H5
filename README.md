@@ -1,7 +1,7 @@
 # 游密科技 WebRTC SDK for HTML5
 
 本 SDK 对 WebRTC 和游密信令服务器、游密 turn 服务器进行统一封装，开发者申请了游密 appKey 后，使用本 SDK 即可简单快速地实现实时视频和实时语音功能。
-
+需要纯语音的可以把pure-voice文件夹里的文件覆盖替换到demo里
 ## 兼容性
 
  - **Android:** 4.4+ （原生浏览器）
