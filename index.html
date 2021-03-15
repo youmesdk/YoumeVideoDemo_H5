@@ -1,137 +1,136 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-<head>
-    <meta charset="UTF-8">
-    <title>WebRTC Demo</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="demo.css">
-</head>
-<body>
-<h1>YouMe WebRTC Demo</h1>
-<div id="status-indicator">
-    <div class="one-indicator login-indicator">
-        <span id="not-log">未登录</span>
-        <span id="logged" style="display: none;">
-            <strong id="user-id">Benz</strong>
-            <button id="logout">登出</button>
-        </span>
-    </div>
-    <div class="one-indicator signaling-indicator">
-        <span>信令状态：</span>
-        <strong id="signaling-status">disconnected</strong>
-    </div>
-    <div class="one-indicator local-media-indicator">
-        <span>本地视频状态：</span>
-        <strong id="local-media-status">stop</strong>
-        <span class="local-media-controls">
-            <button id="local-media-pause-video">屏蔽摄像头</button>
-            <button id="local-media-pause-audio">关闭麦克风</button>
-            <button id="local-media-start-stop">启动摄像头</button>
-            <button id="local-screen-start-stop">启动录屏</button>
-        </span>
-    </div>
-</div>
-<div class="local-media-show">
-    <div class="local-media-outer">
-        <video id="local-media" muted autoplay playsinline></video>
-    </div>
-</div>
-<div id="login-form">
-    <p class="login-form-p">
-        <label for="login-user-id">用户ID：</label>
-        <input type="text" id="login-user-id">
-    </p>
-    <div class="login-form-preset-users">
-        <div class="one-preset-user">
-            <input type="radio" id="login-sanji" name="preset-user" value="sanji">
-            <label for="login-sanji">sanji</label>
+    <head>
+        <meta charset="UTF-8" />
+        <title>WebRTC Demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="demo.css" />
+    </head>
+    <body>
+        <h1>YouMe WebRTC Demo</h1>
+        <div id="status-indicator">
+            <div class="one-indicator login-indicator">
+                <span id="not-log">未登录</span>
+                <span id="logged" style="display: none">
+                    <strong id="user-id">Benz</strong>
+                    <button id="logout">登出</button>
+                </span>
+            </div>
+            <div class="one-indicator signaling-indicator">
+                <span>信令状态：</span>
+                <strong id="signaling-status">disconnected</strong>
+            </div>
+            <div class="one-indicator local-media-indicator">
+                <span>本地视频状态：</span>
+                <strong id="local-media-status">stop</strong>
+                <span class="local-media-controls">
+                    <button id="local-media-pause-video">屏蔽摄像头</button>
+                    <button id="local-media-pause-audio">关闭麦克风</button>
+                    <button id="local-media-start-stop">启动摄像头</button>
+                    <button id="local-screen-start-stop">启动录屏</button>
+                    <button id="pause-subscribe-stream">暂停接受远端流</button>
+                    <button id="resume-subscribe-stream">恢复接受远端流</button>
+                </span>
+            </div>
         </div>
-        <div class="one-preset-user">
-            <input type="radio" id="login-fantasy" name="preset-user" value="fantasy">
-            <label for="login-fantasy">fantasy</label>
+        <div class="local-media-show">
+            <div class="local-media-outer">
+                <video id="local-media" muted autoplay playsinline></video>
+            </div>
         </div>
-        <div class="one-preset-user">
-            <input type="radio" id="login-9999" name="preset-user" value="9999">
-            <label for="login-9999">9999</label>
+        <div id="login-form">
+            <p class="login-form-p">
+                <label for="login-user-id">用户ID：</label>
+                <input type="text" id="login-user-id" />
+            </p>
+            <div class="login-form-preset-users">
+                <div class="one-preset-user">
+                    <input type="radio" id="login-sanji" name="preset-user" value="sanji" />
+                    <label for="login-sanji">sanji</label>
+                </div>
+                <div class="one-preset-user">
+                    <input type="radio" id="login-fantasy" name="preset-user" value="fantasy" />
+                    <label for="login-fantasy">fantasy</label>
+                </div>
+                <div class="one-preset-user">
+                    <input type="radio" id="login-9999" name="preset-user" value="9999" />
+                    <label for="login-9999">9999</label>
+                </div>
+                <div class="one-preset-user">
+                    <input type="radio" id="login-zoro3000" name="preset-user" value="zoro3000" />
+                    <label for="login-zoro3000">zoro3000</label>
+                </div>
+                <div class="one-preset-user">
+                    <input type="radio" id="login-youme_test201701" name="preset-user" value="youme_test201701" />
+                    <label for="login-youme_test201701">youme_test201701</label>
+                </div>
+                <div class="one-preset-user">
+                    <input type="radio" id="login-youme_test201702" name="preset-user" value="youme_test201702" />
+                    <label for="login-youme_test201702">youme_test201702</label>
+                </div>
+            </div>
+            <p class="login-form-p">
+                <label for="login-room-id">房间号：</label>
+                <input type="text" id="login-room-id" value="12345" />
+            </p>
+            <div class="login-form-submit">&nbsp;<button id="login">登录</button></div>
         </div>
-        <div class="one-preset-user">
-            <input type="radio" id="login-zoro3000" name="preset-user" value="zoro3000">
-            <label for="login-zoro3000">zoro3000</label>
-        </div>
-        <div class="one-preset-user">
-            <input type="radio" id="login-youme_test201701" name="preset-user" value="youme_test201701">
-            <label for="login-youme_test201701">youme_test201701</label>
-        </div>
-        <div class="one-preset-user">
-            <input type="radio" id="login-youme_test201702" name="preset-user" value="youme_test201702">
-            <label for="login-youme_test201702">youme_test201702</label>
-        </div>
-    </div>
-    <p class="login-form-p">
-        <label for="login-room-id">房间号：</label>
-        <input type="text" id="login-room-id" value="12345">
-    </p>
-    <div class="login-form-submit">
-        &nbsp;<button id="login">登录</button>
-    </div>
-</div>
 
-<div id="rooms-container" style="display: none;">
-    <div class="room-container" id="room-container">
-        <div class="room-title">
-            <label for="room-id-input">房间ID：</label>
-            <strong id="room-id" style="display: none;"></strong>
-            <input type="text" id="room-id-input">
-            <button id="join-leave-room">加入房间</button>
-            <button id="mute-all">全部静音</button>
-            <button id="cancel-mute-all">全部不静音</button>
+        <div id="rooms-container" style="display: none">
+            <div class="room-container" id="room-container">
+                <div class="room-title">
+                    <label for="room-id-input">房间ID：</label>
+                    <strong id="room-id" style="display: none"></strong>
+                    <input type="text" id="room-id-input" />
+                    <button id="join-leave-room">加入房间</button>
+                    <button id="mute-all">全部静音</button>
+                    <button id="cancel-mute-all">全部不静音</button>
+                </div>
+                <div class="room-members" id="room"></div>
+                <pre id="room-stats"></pre>
+            </div>
         </div>
-        <div class="room-members" id="room"></div>
-        <pre id="room-stats"></pre>
-    </div>
-</div>
 
-<!--
+        <!--
 <div class="console-title">Console</div>
 <div class="console">
     <pre id="console"></pre>
 </div>
 -->
 
-<!--<div class="user-container" id="user-container-{{userId}}">-->
-<script type="text/template" id="user-template">
-    <div class="user-video-outer">
-        <video id="user-video-{{userId}}" muted autoplay playsinline></video>
-    </div>
-    <div class="user-id">{{userId}}</div>
-    <div class="user-video-control user-one-line">
-        <span>静音：</span>
-        <input type="radio" id="user-mute-on-{{userId}}" name="user-mute-{{userId}}" class="user-mute user-mute-on">
-        <label for="user-mute-on-{{userId}}">开</label>
-        <input type="radio" id="user-mute-off-{{userId}}" name="user-mute-{{userId}}" class="user-mute user-mute-off">
-        <label for="user-mute-off-{{userId}}">关</label>
-    </div>
-    <div class="user-signaling-status user-one-line">
-        <span>信令状态：</span>
-        <strong id="user-signaling-status-{{userId}}">new</strong>
-    </div>
-    <div class="user-ice-status user-one-line">
-        <span>ICE 状态：</span>
-        <strong id="user-ice-status-{{userId}}">new</strong>
-    </div>
-    <div>
-        <pre id="user-media-stats-{{userId}}"></pre>
-    </div>
-</script>
-<!--</div>-->
-<!-- <script src="vconsole.min.js"></script> -->
+        <!--<div class="user-container" id="user-container-{{userId}}">-->
+        <script type="text/template" id="user-template">
+            <div class="user-video-outer">
+                <video id="user-video-{{userId}}" muted autoplay playsinline></video>
+            </div>
+            <div class="user-id">{{userId}}</div>
+            <div class="user-video-control user-one-line">
+                <span>静音：</span>
+                <input type="radio" id="user-mute-on-{{userId}}" name="user-mute-{{userId}}" class="user-mute user-mute-on">
+                <label for="user-mute-on-{{userId}}">开</label>
+                <input type="radio" id="user-mute-off-{{userId}}" name="user-mute-{{userId}}" class="user-mute user-mute-off">
+                <label for="user-mute-off-{{userId}}">关</label>
+            </div>
+            <div class="user-signaling-status user-one-line">
+                <span>信令状态：</span>
+                <strong id="user-signaling-status-{{userId}}">new</strong>
+            </div>
+            <div class="user-ice-status user-one-line">
+                <span>ICE 状态：</span>
+                <strong id="user-ice-status-{{userId}}">new</strong>
+            </div>
+            <div>
+                <pre id="user-media-stats-{{userId}}"></pre>
+            </div>
+        </script>
+        <!--</div>-->
+        <!-- <script src="vconsole.min.js"></script> -->
 
-<script>
-    if(typeof VConsole !== 'undefined') window.vc = new VConsole();
-</script>
-<script src="sdk/ymrtc.min.js"></script>
-<script src="crypto-js.js"></script>
-<script src="demo.js"></script>
-
-</body>
+        <script>
+            if (typeof VConsole !== 'undefined') window.vc = new VConsole();
+        </script>
+        <script src="sdk/ymrtc.umd.min.js"></script>
+        <script src="crypto-js.js"></script>
+        <script src="demo.js"></script>
+    </body>
 </html>
